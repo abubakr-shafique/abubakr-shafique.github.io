@@ -1,1 +1,5 @@
-This is the source code to Jon Barron's public academic website: https://jonbarron.info/. Feel free to clone this code for your own personal use.
+# Abubakr Shafique, PhD
+
+## Acknowledgment
+
+This website is adapted from the source code by [Jon Barron](https://jonbarron.info/), which has been forked and customized to create Abubakr Shafique’s personal academic website.
