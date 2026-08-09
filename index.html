@@ -1,427 +1,956 @@
-<!DOCTYPE HTML>
-<html lang="en">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Abubakr Shafique">
+<meta name="description" content="Abubakr Shafique, PhD — Post-Doctoral Researcher, Image Analysis in Medicine Lab (IAMLAB), Toronto Metropolitan University. AI/ML for medical image analysis and representation learning.">
+<title>Abubakr Shafique, PhD</title>
+<link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<script>
+/* Set theme before paint to avoid flash */
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem('theme'); } catch (e) {}
+  var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+<style>
+/* ============ Design tokens ============ */
+:root {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #eef0f7;
+  --text: #1b2130;
+  --muted: #5a6172;
+  --accent: #2f4fdd;
+  --accent-soft: rgba(47, 79, 221, 0.10);
+  --accent-2: #e8830c;
+  --border: #e3e6ef;
+  --shadow: 0 10px 30px rgba(20, 28, 55, 0.08);
+  --shadow-hover: 0 18px 44px rgba(20, 28, 55, 0.16);
+  --media-bg: #eceff6;
+  --nav-bg: rgba(246, 247, 251, 0.82);
+  --code: #eef1f9;
+}
+[data-theme="dark"] {
+  --bg: #0c0f16;
+  --surface: #141927;
+  --surface-2: #1b2133;
+  --text: #e8ebf4;
+  --muted: #98a1b6;
+  --accent: #7ea0ff;
+  --accent-soft: rgba(126, 160, 255, 0.14);
+  --accent-2: #f5b83d;
+  --border: #242c40;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-hover: 0 18px 44px rgba(0, 0, 0, 0.6);
+  --media-bg: #0f1420;
+  --nav-bg: rgba(12, 15, 22, 0.82);
+  --code: #1c2334;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-2); }
+img, video { max-width: 100%; }
+::selection { background: var(--accent); color: #fff; }
 
-    <title>Abubakr Shafique, PhD</title>
+.wrap { max-width: 1060px; margin: 0 auto; padding: 0 22px; }
 
-    <meta name="author" content="Abubakr Shafique">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="images/favicon/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    
-  </head>
+/* ============ Navbar ============ */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  max-width: 1060px; margin: 0 auto; padding: 12px 22px;
+  display: flex; align-items: center; gap: 18px;
+}
+.brand {
+  font-weight: 800; font-size: 1.02rem; letter-spacing: -0.02em;
+  color: var(--text); white-space: nowrap;
+}
+.brand span { color: var(--accent); }
+.nav-links {
+  display: flex; gap: 4px; margin-left: auto; align-items: center;
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  color: var(--muted); font-size: 0.86rem; font-weight: 600;
+  padding: 7px 12px; border-radius: 999px; white-space: nowrap;
+  transition: color 0.2s, background 0.2s;
+}
+.nav-links a:hover { color: var(--text); background: var(--surface-2); }
+#themeToggle {
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); width: 38px; height: 38px; border-radius: 50%;
+  cursor: pointer; display: grid; place-items: center; flex: 0 0 auto;
+  transition: transform 0.25s, border-color 0.25s, background 0.25s;
+}
+#themeToggle:hover { transform: rotate(18deg) scale(1.08); border-color: var(--accent); }
+#themeToggle svg { width: 18px; height: 18px; }
+[data-theme="light"] .icon-moon { display: block; }
+[data-theme="light"] .icon-sun { display: none; }
+[data-theme="dark"] .icon-moon { display: none; }
+[data-theme="dark"] .icon-sun { display: block; }
 
-  <body>
-    <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-      <tr style="padding:0px">
-        <td style="padding:0px">
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr style="padding:0px">
-              <td style="padding:2.5%;width:63%;vertical-align:middle">
-                <p class="name" style="text-align: center;">
-                  Abubakr Shafique, PhD
-                </p>
-                <p>
-				I am a <a href="https://www.torontomu.ca/graduate/postdoctoral-fellows/torontomet-postdoctoral-fellows/postdoc-bios/abubakr-shafique/">Post-Doctoral Researcher</a> at <a href="https://www.torontomu.ca/akhademi/">Image Analysis in Medicine Lab (IAMLAB)</a>, Toronto Metropolitan University, Toronto, ON, Canada. <br>
-				<br>
-				I am a results-driven scientist with a Ph.D. from the University of Waterloo, Canada, specializing in Artificial Intelligence (AI) and Machine Learning (ML) with a focus on Medical Image Analysis and Representation Learning.<br>
-				My expertise spans the development and implementation of advanced algorithms for computational biology, integrating AI innovation with biomedical applications. 
-				Combining strong academic foundations with hands-on research experience, I excel at tackling complex interdisciplinary problems in AI and medicine, driving discoveries that bridge data science and clinical impact.
-                </p>
-                <p style="text-align:center">
-                  <a href="mailto:abubakr.shafique@gmail.com">Email</a> &nbsp;/&nbsp;
-                  <a href="data/Abubakr_Shafique-CV.pdf">CV</a> &nbsp;/&nbsp;
-                  <a href="data/AbubakrShafique-bio.txt">Bio</a> &nbsp;/&nbsp;
-                  <a href="https://scholar.google.com/citations?hl=en&user=zlnaTcIAAAAJ&view_op=list_works&sortby=pubdate">Scholar</a> &nbsp;/&nbsp;
-                  <a href="https://www.researchgate.net/profile/Abubakr-Shafique?ev=hdr_xprf">ResearchGate</a> &nbsp;/&nbsp;
-                  <a href="https://github.com/abubakr-shafique">Github</a> &nbsp;/&nbsp;
-				  <a href="https://linkedin.com/in/abubakr-shafique-943560113">LinkedIn</a>
-                </p>
-              </td>
-              <td style="padding:2.5%;width:37%;max-width:37%">
-                <a href="images/AB.jpg"><img style="width:100%;max-width:100%;object-fit: cover; border-radius: 20%;" alt="profile photo" src="images/AB.jpg" class="hoverZoomLink"></a>
-              </td>
-            </tr>
-          </tbody></table>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-              <tr>
-              <td style="padding:16px;width:100%;vertical-align:middle">
-                <h2><b>Research</b></h2>
-                <p>
-                  I am interested in computer vision, deep learning, generative AI, image processing, and natural language processing.<br>
-				  My research primarily focuses on representation learning and understanding self-supervised learning and foundation models in medical imaging, encompassing both uni-modal (vision or language) and multi-modal (vision-language, vision-genomics) frameworks.<br> 
-				  <br>
-				  <b>Some papers are:</b>
-                </p>
-              </td>
-            </tr>
-          </tbody></table>
-          <table style="width:100%;border:0px;border-spacing:0px 10px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>      
-  
-  
-			
-			<tr onmouseout="nerfsuper_stop()" onmouseover="nerfsuper_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div class="one">
-                <div class="two" id='malle_image'>
-                  <img src='images/HistoLite.png' width="160"></div>
-                <img src='images/HistoLite.png' width="160">
-              </div>
-              <script type="text/javascript">
-                function malle_start() {
-                  document.getElementById('HistoLite').style.opacity = "1";
-                }
+/* ============ Hero ============ */
+.hero {
+  display: grid; grid-template-columns: 210px 1fr; gap: 40px;
+  align-items: center; padding: 64px 0 40px;
+}
+.avatar-ring {
+  width: 210px; height: 210px; border-radius: 32px; padding: 5px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: var(--shadow);
+}
+.avatar-ring img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 27px; display: block;
+}
+.hero h1 {
+  margin: 0 0 6px; font-size: 2.35rem; letter-spacing: -0.03em; line-height: 1.15;
+}
+.hero h1 .grad {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.tagline { color: var(--muted); font-size: 1.02rem; margin: 0 0 14px; max-width: 640px; }
+.tagline a { font-weight: 600; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 15px; border-radius: 999px; font-size: 0.84rem; font-weight: 600;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.chip:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--shadow); color: var(--accent); }
+.chip svg { width: 15px; height: 15px; fill: currentColor; }
 
-                function malle_stop() {
-                  document.getElementById('HistoLite').style.opacity = "0";
-                }
-                malle_stop()
-              </script>
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://www.nature.com/articles/s41598-025-20411-0">
-                <papertitle><b>Lightweight self supervised learning framework for domain generalization in histopathology</b></papertitle>
-              </a>
-              <br>
-		   <strong>Abubakr Shafique</strong>,
-			<a>Amanda Dy</a>,
-			<a>Xiaoli Qin</a>,
-			<a>Najd Alshamlan</a>,
-			<a>Susan J. Done</a>,
-			<a>Dimitrios Androutsos</a>,
-			<a>April Khademi</a>,
-              <br>
-              <em>Scientific Reports</em>, 2025
-              <br>
-              [<a href="https://www.nature.com/articles/s41598-025-20411-0">Paper</a>]
-			  [<a href="https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-025-20411-0/MediaObjects/41598_2025_20411_MOESM1_ESM.pdf">Supplementary</a>]
-			  [<a href="https://github.com/IAMLAB-Ryerson/HistoLite">Code</a>]
-              <p></p>
-              <p>
-              This study introduces HistoLite, a lightweight self-supervised learning framework for domain-invariant representation learning in histopathology. Using a dual-scanner dataset, it evaluates the impact of scanner-induced covariate shifts on foundation models, revealing their susceptibility to scanner bias. HistoLite demonstrates reduced representation shift and improved generalization, highlighting its efficiency and robustness compared to large-scale models.
-			  </p>
-            </td>
-          </tr>
-			
+/* ============ Sections ============ */
+section { padding: 42px 0; }
+.sec-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; }
+.sec-head h2 { margin: 0; font-size: 1.55rem; letter-spacing: -0.02em; }
+.sec-head .bar { width: 34px; height: 4px; border-radius: 4px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); align-self: center; }
+.sec-sub { color: var(--muted); margin: 0 0 26px; max-width: 720px; }
 
-			<tr onmouseout="nerfsuper_stop()" onmouseover="nerfsuper_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div class="one">
-                <div class="two" id='malle_image'>
-                  <img src='images/RepShift.png' width="160"></div>
-                <img src='images/RepShift.png' width="160">
-              </div>
-              <script type="text/javascript">
-                function malle_start() {
-                  document.getElementById('RepShift').style.opacity = "1";
-                }
+/* ============ Publication cards ============ */
+.pub {
+  display: grid; grid-template-columns: 300px 1fr; gap: 26px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 22px; margin-bottom: 22px;
+  box-shadow: var(--shadow);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+.pub:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
+.pub-media {
+  background: var(--media-bg); border-radius: 14px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; min-height: 210px;
+  border: 1px solid var(--border);
+}
+.pub-media img, .pub-media video {
+  width: 100%; height: 100%; max-height: 260px; object-fit: contain; display: block;
+  transition: transform 0.4s ease;
+}
+.pub:hover .pub-media img, .pub:hover .pub-media video { transform: scale(1.04); }
+.pub-body h3 { margin: 0 0 8px; font-size: 1.08rem; line-height: 1.4; }
+.pub-body h3 a { color: var(--text); }
+.pub-body h3 a:hover { color: var(--accent); }
+.authors { color: var(--muted); font-size: 0.88rem; margin: 0 0 8px; }
+.authors strong { color: var(--text); }
+.venue {
+  display: inline-block; font-size: 0.76rem; font-weight: 700; letter-spacing: 0.02em;
+  padding: 4px 12px; border-radius: 999px; margin-bottom: 10px;
+  background: var(--accent-soft); color: var(--accent);
+}
+.pub-desc { font-size: 0.9rem; color: var(--muted); margin: 0 0 12px; }
+.pub-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.pub-links a {
+  font-size: 0.78rem; font-weight: 700; padding: 5px 13px; border-radius: 8px;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+  font-family: 'JetBrains Mono', monospace;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.pub-links a:hover { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-                function malle_stop() {
-                  document.getElementById('RepShift').style.opacity = "0";
-                }
-                malle_stop()
-              </script>
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://link.springer.com/chapter/10.1007/978-3-032-05870-6_4">
-                <papertitle><b>How Fair are Foundation Models? Exploring the Role of Covariate Bias in Histopathology</b></papertitle>
-              </a>
-              <br>
-		   <strong>Abubakr Shafique</strong>,
-			<a>Amanda Dy</a>,
-			<a>Xiaoli Qin</a>,
-			<a>Najd Alshamlan</a>,
-			<a>Susan J. Done</a>,
-			<a>Dimitrios Androutsos</a>,
-			<a>April Khademi</a>,
-              <br>
-              <em>MICCAI Fairness of AI in Medical Imaging</em>, (FAIMI 2025)
-              <br>
-              [<a href="https://link.springer.com/chapter/10.1007/978-3-032-05870-6_4">Paper</a>]
-              <p></p>
-              <p>
-              This paper investigates the impact of covariate shift, particularly those arising from scanner-specific variations, on the performance and robustness of foundation models in computational histopathology.
-			  </p>
-            </td>
-          </tr>
-		  
-		  			<tr onmouseout="nerfsuper_stop()" onmouseover="nerfsuper_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div class="one">
-                <div class="two" id='malle_image'>
-                  <img src='images/MiDOG2025.png' width="160"></div>
-                <img src='images/MiDOG2025.png' width="160">
-              </div>
-              <script type="text/javascript">
-                function malle_start() {
-                  document.getElementById('MiDOG2025').style.opacity = "1";
-                }
+/* ============ Game ============ */
+.game-shell {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 22px; box-shadow: var(--shadow);
+}
+.game-shell canvas {
+  width: 100%; height: auto; display: block; border-radius: 14px;
+  background: var(--media-bg); border: 1px solid var(--border);
+  cursor: pointer; touch-action: manipulation;
+}
+.game-hint {
+  display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  color: var(--muted); font-size: 0.82rem; margin-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.game-hint kbd {
+  background: var(--code); border: 1px solid var(--border); border-bottom-width: 2px;
+  border-radius: 6px; padding: 1px 7px; font-family: inherit; color: var(--text);
+}
 
-                function malle_stop() {
-                  document.getElementById('MiDOG2025').style.opacity = "0";
-                }
-                malle_stop()
-              </script>
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://arxiv.org/abs/2509.03614">
-                <papertitle><b>Teacher-Student Model for Detecting and Classifying Mitosis in the MIDOG 2025 Challenge</b></papertitle>
-              </a>
-              <br>
-			<a>Seungho Choe</a>,
-			<a>Xiaoli Qin</a>,
-		   <strong> Abubakr Shafique</strong>,
-			<a>Amanda Dy</a>,
-			<a>Susan Done</a>,
-			<a>Dimitrios Androutsos</a>,
-			<a>April Khademi</a>,
-              <br>
-              <em>MICCAI Mitosis Domain Generalization Challenge</em>, (MIDOG 2025)
-              <br>
-              [<a href="https://arxiv.org/abs/2509.03614">Paper</a>]
-              <p></p>
-              <p>
-              This work presents a teacher-student segmentation framework for robust mitosis detection and atypical mitosis classification. Built on a UNet backbone with contrastive and domain-adversarial learning, the model mitigates domain shift and data imbalance. It achieved strong performance (F1 = 0.7660, balanced accuracy = 0.8414), highlighting the effectiveness of unified detection and classification for reliable mitosis analysis.
-			  </p>
-            </td>
-          </tr>
+/* ============ Talks / Teaching / Service / Certs ============ */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+  padding: 20px; box-shadow: var(--shadow);
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+}
+.card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--accent); }
+.card .role { font-weight: 700; font-size: 0.96rem; margin-bottom: 4px; }
+.card .where { color: var(--muted); font-size: 0.87rem; }
+.card .when {
+  display: inline-block; margin-top: 10px; font-size: 0.74rem; font-weight: 700;
+  font-family: 'JetBrains Mono', monospace; color: var(--accent-2);
+  background: var(--accent-soft); padding: 3px 10px; border-radius: 999px;
+}
+.card a.stretched { color: inherit; }
+.card a.stretched:hover .role { color: var(--accent); }
 
+.talk { display: flex; gap: 18px; align-items: flex-start; }
+.talk .year {
+  flex: 0 0 74px; text-align: center; font-family: 'JetBrains Mono', monospace;
+  font-weight: 700; font-size: 0.8rem; color: var(--accent);
+  background: var(--accent-soft); border-radius: 10px; padding: 8px 4px;
+}
+.talk .t-title { font-weight: 700; font-size: 0.96rem; }
+.talk .t-venue { color: var(--muted); font-size: 0.86rem; }
 
-            <tr onmouseout="nerfsuper_stop()" onmouseover="nerfsuper_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div class="one">
-                <div class="two" id='nerfsuper_image'><video  width=100% height=100% muted autoplay loop>
-                <source src="images/PathDino.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-                </video></div>
-              </div>
-              <script type="text/javascript">
-                function nerfsuper_start() {
-                  document.getElementById('PathDino').style.opacity = "1";
-                }
+.cert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
+.cert {
+  display: flex; gap: 12px; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 14px 16px; font-size: 0.85rem;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.cert:hover { transform: translateY(-2px); border-color: var(--accent); }
+.cert .badge-ico {
+  flex: 0 0 34px; height: 34px; border-radius: 10px; display: grid; place-items: center;
+  background: var(--accent-soft); color: var(--accent);
+}
+.cert .badge-ico svg { width: 17px; height: 17px; fill: currentColor; }
+.cert .c-name { font-weight: 700; line-height: 1.35; }
+.cert .c-org { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
 
-                function nerfsuper_stop() {
-                  document.getElementById('PathDino').style.opacity = "0";
-                }
-                nerfsuper_stop()
-              </script>
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Alfasly_Rotation-Agnostic_Image_Representation_Learning_for_Digital_Pathology_CVPR_2024_paper.html">
-                <papertitle><b>Rotation-Agnostic Image Representation Learning for Digital Pathology</b></papertitle>
-              </a>
-              <br>
-	      <a>Saghir Alfasly</a>,
-              <strong>Abubakr Shafique</strong>,
-              <a >Peyman Nejat</a>, 
-		<a> Jibran Khan </a>
-	      <a >Areej Alsaafin</a>, 
-	      <a >Ghazal Alabtah</a>, 
-	      <a >H.R.Tizhoosh</a>, 
-              <br>
-              <em>CVPR</em>, 2024
-              <br>
-	      [<a href="https://kimialabmayo.github.io/PathDino-Page/">Project webpage</a>]
-              [<a href="https://huggingface.co/spaces/Saghir/PathDino">Demo</a>]
-              [<a href="https://openaccess.thecvf.com/content/CVPR2024/html/Alfasly_Rotation-Agnostic_Image_Representation_Learning_for_Digital_Pathology_CVPR_2024_paper.html">Paper</a>]
-	      [<a href="https://openaccess.thecvf.com/content/CVPR2024/supplemental/Alfasly_Rotation-Agnostic_Image_Representation_CVPR_2024_supplemental.pdf">Supplementary</a>]
-		[<a href="https://github.com/KimiaLabMayo/PathDino">Code</a>]
-		[<a href="https://portal.gdc.cancer.gov/repository?facetTab=files&filters=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.program.name%22%2C%22value%22%3A%5B%22TCGA%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.access%22%2C%22value%22%3A%5B%22open%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.data_format%22%2C%22value%22%3A%5B%22svs%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.experimental_strategy%22%2C%22value%22%3A%5B%22Diagnostic%20Slide%22%5D%7D%7D%5D%7D">Data</a>]
-              <p></p>
-              <p>
-              In this work, we introduce a fast patch selection method (FPS) for efficient selection of representative patches while preserving spatial distribution. HistoRotate, is a 360∘ rotation augmentation for training histopathology models, enhancing learning without compromising contextual information. PathDino, is a compact histopathology Transformer with five small vision transformer blocks and ≈9 million parameters.
-              </p>
-            </td>
-          </tr>
+/* ============ Reveal animation ============ */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}
 
-			<tr onmouseout="nerfsuper_stop()" onmouseover="nerfsuper_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div class="one">
-                <div class="two" id='malle_image'>
-                  <img src='images/FM.jpg' width="160"></div>
-                <img src='images/FM.jpg' width="160">
-              </div>
-              <script type="text/javascript">
-                function malle_start() {
-                  document.getElementById('FM').style.opacity = "1";
-                }
+/* ============ Footer ============ */
+footer {
+  border-top: 1px solid var(--border); margin-top: 30px;
+  padding: 30px 0 40px; text-align: center; color: var(--muted); font-size: 0.84rem;
+}
 
-                function malle_stop() {
-                  document.getElementById('FM').style.opacity = "0";
-                }
-                malle_stop()
-              </script>
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://www.sciencedirect.com/science/article/pii/S2949761224000142">
-                <papertitle><b>Foundation Models for Histopathology — Fanfare or Flair</b></papertitle>
-              </a>
-              <br>
-	      <a>Saghir Alfasly</a>,
-	      <a >Peyman Nejat</a>, 
-		   <a>   Sobhan Hemati</a>,
-		   <a>   Jibran Khan</a>,
-		   <a>   Isaiah Lahr</a>,
-		   <a>   Areej Alsaafin</a>,
-		   <strong>   Abubakr Shafique</strong>,
-		   <a>   Nneka Comfere</a>,
-		   <a>   Dennis Murphree</a>,
-		   <a>   Chady Meroueh</a>,
-		   <a>   Saba Yasir</a>,
-		  <a>    Aaron Mangold</a>,
-		 <a>     Lisa Boardman</a>,
-		  <a>   Vijay H. Shah</a>,
-		     <a> Joaquin J. Garcia</a>,
-		    <a>  H.R. Tizhoosh</a>,
-              <br>
-              <em>Mayo Clinic Proceedings: Digital Health</em>, 2024
-              <br>
-              [<a href="https://www.sciencedirect.com/science/article/pii/S2949761224000142">Paper</a>]
-	      [<a href="https://ars.els-cdn.com/content/image/1-s2.0-S2949761224000142-mmc1.pdf">Supplementary</a>]
-              <p></p>
-              <p>
-              This paper investigates the efficacy of the foundation models in the domain of histopathology by conducting a detailed comparison between these models, specifically CLIP derivatives (PLIP and BiomedCLIP), and traditional, domain-specific histology models that leverage well-curated datasets. Through a rigorous evaluation process on eight diverse datasets, including four internal from Mayo Clinic and four well-known public datasets (PANDA, BRACS, CAMELYON16, DigestPath). The findings show that domain-specific models, such as DinoSSLPath and KimiaNet, provide better performance across various metrics, underlining the significance of clean large datasets for histopathological analyses. 
-              </p>
-            </td>
-          </tr>	
-		 
-		 	<tr onmouseout="nerfsuper_stop()" onmouseover="nerfsuper_start()">
-            <td style="padding:20px;width:25%;vertical-align:middle">
-              <div class="one">
-                <div class="two" id='malle_image'>
-                  <img src='images/SDM.gif' width="160"></div>
-                <img src='images/SDM.gif' width="160">
-              </div>
-              <script type="text/javascript">
-                function malle_start() {
-                  document.getElementById('SDM').style.opacity = "1";
-                }
+/* ============ Responsive ============ */
+@media (max-width: 820px) {
+  .hero { grid-template-columns: 1fr; text-align: center; gap: 24px; padding-top: 44px; }
+  .avatar-ring { margin: 0 auto; width: 170px; height: 170px; }
+  .chips { justify-content: center; }
+  .tagline { margin-left: auto; margin-right: auto; }
+  .pub { grid-template-columns: 1fr; }
+  .pub-media { min-height: 180px; }
+  .hero h1 { font-size: 1.9rem; }
+}
+</style>
+</head>
+<body>
 
-                function malle_stop() {
-                  document.getElementById('SDM').style.opacity = "0";
-                }
-                malle_stop()
-              </script>
-            </td>
-            <td style="padding:20px;width:75%;vertical-align:middle">
-              <a href="https://arxiv.org/abs/2311.09902">
-                <papertitle><b>Selection of Distinct Morphologies to Divide & Conquer Gigapixel Pathology Images</b></papertitle>
-              </a>
-              <br>
-              <strong>Abubakr Shafique</strong>,
-              <a>Saghir Alfasly</a>,
-	      <a >Areej Alsaafin</a>,
-              <a >Peyman Nejat</a>, 
-	      <a> Jibran Khan </a>
-	      <a >H.R.Tizhoosh</a>,
-              <br>
-              <em>Preprint</em>, 2023
-              <br>
-              [<a href="https://arxiv.org/abs/2311.09902">Paper</a>]
-	      [<a href="https://arxiv.org/pdf/2311.09902.pdf">Supplementary</a>]
-              <p></p>
-              <p>
-              We propose SDM, a novel method for selecting diverse WSI patches, minimizing patch count while capturing all morphological variations. SDM outperforms the state-of-the-art, achieving high representativeness without needing parameter tuning.
-              </p>
-            </td>
-          </tr>	
+<!-- ================= NAV ================= -->
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="#top">Abubakr <span>Shafique</span></a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#publications">Publications</a>
+      <a href="#game">Scholar&nbsp;Run</a>
+      <a href="#talks">Talks</a>
+      <a href="#service">Service</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#certifications">Certifications</a>
+    </div>
+    <button id="themeToggle" aria-label="Toggle dark / light mode" title="Toggle theme">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+  </div>
+</nav>
 
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-		   
-            <tr>
-              <td>
-                <h2><b>Certifications:</b></h2>
-              </td>
-            </tr>
-			
-            <tr>
-              <td style="padding:0px;width:100%;vertical-align:middle">
-                <a href="https://www.coursera.org/account/accomplishments/specialization/VR14XQN1IG7M"> <b>Cancer Biology</b>: The Johns Hopkins University (October 2025) </a>
-                <br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/9N2ZYWKPPDD9"> <b>Introduction to the Biology of Cancer</b>: The Johns Hopkins University (October 2025) </a>
-                <br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/TWQ9P72W3C5P"> <b>Understanding Cancer Metastasis</b>: The Johns Hopkins University (October 2025) </a>
-                <br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/JNP5BNJ5EEV7"> <b>Understanding Prostate Cancer</b>: The Johns Hopkins University (October 2025) </a>
-				<br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/4YE5HKV6YUIJ"> <b>Data Science in Stratified Healthcare and Precision Medicine</b>: The University of Edinburgh (October 2025) </a>
-				<br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/1XJUPYNJQNU6"> <b>Introduction to Neurohacking In R</b>: The Johns Hopkins University (October 2025) </a>
-				<br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/QX6YWBQJB7LC"> <b>An Introduction to Practical Deep Learning</b>: Intel Corporation (December 2020) </a>
-				<br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/D8CTL9YS76DE"> <b>Introduction to TensorFlow for Artificial Intelligence, Machine Learning, and Deep Learning</b>: DeepLearning.AI (August 2020) </a>
-				<br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/AUPWNCZHB7C8"> <b>Neural Networks and Deep Learning</b>: DeepLearning.AI (August 2020) </a>
-				<br>
-                <a href="https://www.coursera.org/account/accomplishments/verify/LP5N4UEXDD9Q"> <b>COVID-19 Contact Tracing</b>: The Johns Hopkins University (July 2025) </a>
-				<br>
-              </td>
-            </tr>
-		   
-            <tr>
-              <td>
-                <h2><b>Invited Talks:</b></h2>
-              </td>
-            </tr>
+<div class="wrap" id="top">
 
-            <tr>
-              <td style="padding:0px;width:100%;vertical-align:center">
-				<a href=""> <b>AI to Improve Cancer Care</b>, at Canadian Cancer Trials Group Annual Spring Meeting <br>(April, 2025)</a><br>
-                <a href="https://www.youtube.com/watch?v=t2YN8WrqHlQ"> <b>How Fair are Foundation Models? Exploring the Role of Covariate Bias in Histopathology</b>, at Stanford MedAI Group <br>(October, 2025)</a><br>
-				<a href="https://spie.org/medical-imaging/presentation/Investigating-scannerbias-in-histopathology-image-retrieval-using-foundation-models/13932-5"> <b>Investigating Scanner-bias in Histopathology Image Retrieval Using Foundation Models</b>, at SPIE Medical Imaging <br>(February, 2026)</a><br>				
-                <a href=""> <b>How Fair are Foundation Models? Exploring the Role of Covariate Bias in Histopathology</b>, at Abbvie CVRT Imaging Seminar <br>(February, 2026)</a><br>
-              </td>
-            </tr>
-			
-			
-			<tr>
-              <td>
-                <h2><b>Academic Services:</b></h2>
-              </td>
-            </tr>
-			
-            <tr>
-              <td style="padding:0px;width:100%;vertical-align:center">
-                <a href="https://link.springer.com/journal/10278"><b>Academic Reviewer:</b> Journal of Imaging Informatics in Medicine (2025)</a><br>
-				<a href="https://www.nature.com/npjprecisiononcology/"><b>Academic Reviewer:</b> npj Precision Oncology (2025)</a><br>
-                <a href="https://www.nature.com/npjdigitalmed/"><b>Academic Reviewer:</b> npj Digital Medicine (2025)</a><br>
-				<a href="https://link.springer.com/journal/42047"><b>Academic Reviewer:</b> Surgical and Experimental Pathology (2025)</a><br>
-				<a href="https://www.nature.com/srep/"><b>Academic Reviewer:</b> Scientific Reports (2026)</a><br>
-				<a href="https://link.springer.com/journal/10791"><b>Academic Reviewer:</b> Discover Computing (2026)</a><br>
-              </td>
-            </tr>
-		
-			
-			<tr>
-              <td>
-                <h2><b>Teaching:</b></h2>
-              </td>
-            </tr>			
-           
-            <tr>
-              <td style="padding:0px;width:100%;vertical-align:center">
-				<a href=""><b>Graduate Teaching Assistant:</b> College of Applied Sciences, National Taiwan University of Science and Technology, Taipei, Taiwan.</a><br>
-                <a href=""><b>Graduate Teaching Assistant:</b> Department of Engineering, University of Waterloo, Waterloo, ON, Canada.</a><br>
-				<a href=""><b>Guest Lecture:</b> Department of Electrical, Computer and Biomedical Engineering, Toronto Metropolitan University, Toronto, ON, Canada.</a><br>
-                <br>
-              </td>
-            </tr>
-            
-          </tbody></table>
-          <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;"><tbody>
-            <tr>
-              <td style="padding:0px">
-                <br>
-                <p style="text-align:center;font-size:small;">
-                  Abubakr Shafique, PhD
-                </p>
-              </td>
-            </tr>
-          </tbody></table>
-        </td>
-      </tr>
-    </table>
-  </body>
+  <!-- ================= HERO / ABOUT ================= -->
+  <section class="hero" id="about">
+    <div class="avatar-ring">
+      <img src="images/AB.jpg" alt="Portrait of Abubakr Shafique">
+    </div>
+    <div>
+      <h1>Abubakr <span class="grad">Shafique</span>, PhD</h1>
+      <p class="tagline">
+        Post-Doctoral Researcher at the
+        <a href="https://www.torontomu.ca/akhademi/">Image Analysis in Medicine Lab (IAMLAB)</a>,
+        Toronto Metropolitan University, Toronto, ON, Canada.
+      </p>
+      <p class="tagline">
+        Results-driven scientist with a Ph.D. from the University of Waterloo, specializing in
+        Artificial Intelligence and Machine Learning with a focus on Medical Image Analysis and
+        Representation Learning — integrating AI innovation with biomedical applications to bridge
+        data science and clinical impact.
+      </p>
+      <div class="chips">
+        <a class="chip" href="mailto:abubakr.shafique@gmail.com">
+          <svg viewBox="0 0 24 24"><path d="M2 4h20v16H2z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m2 6 10 7L22 6" fill="none" stroke="currentColor" stroke-width="2"/></svg>Email</a>
+        <a class="chip" href="data/AbubakrShafique-CV.pdf">
+          <svg viewBox="0 0 24 24"><path d="M6 2h9l5 5v15H6z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14 2v6h6" fill="none" stroke="currentColor" stroke-width="2"/></svg>CV</a>
+        <a class="chip" href="https://scholar.google.com/citations?hl=en&user=zlnaTcIAAAAJ&view_op=list_works&sortby=pubdate">
+          <svg viewBox="0 0 24 24"><path d="M12 3 1 9l11 6 9-4.9V17h2V9z"/><path d="M5 13.2V17c0 1.7 3.1 3 7 3s7-1.3 7-3v-3.8l-7 3.8z"/></svg>Scholar</a>
+        <a class="chip" href="https://www.researchgate.net/profile/Abubakr-Shafique?ev=hdr_xprf">
+          <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.6 14.6H8.2V9.4h2.2c1.6 0 2.7.9 2.7 2.3 0 1-.5 1.7-1.3 2l1.6 2.9h-1.9l-1.4-2.7h-.5v2.7zm0-4h-.5v-2h.5c.7 0 1.1.4 1.1 1s-.4 1-1.1 1z"/></svg>ResearchGate</a>
+        <a class="chip" href="https://github.com/abubakr-shafique">
+          <svg viewBox="0 0 24 24"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C16.5 4.9 17.5 5.2 17.5 5.2c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a>
+        <a class="chip" href="https://linkedin.com/in/abubakr-shafique-943560113">
+          <svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.5c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9V21H9z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RESEARCH ================= -->
+  <section id="research" class="reveal">
+    <div class="sec-head"><h2>Research</h2><span class="bar"></span></div>
+    <p class="sec-sub">
+      My research bridges advanced AI methods and real-world clinical impact, spanning
+      uni-modal (vision or language) and multi-modal (vision-language, vision-genomics)
+      frameworks for medical imaging. Key interests include:
+    </p>
+    <ul class="research-bullets">
+      <li><span class="hl">Medical Image Analysis:</span> Deep learning for segmentation,
+        detection, and computer-aided diagnosis across histopathology, MRI, CT, X-ray,
+        and ultrasound, with attention to clinical validation and deployment.</li>
+      <li><span class="hl">Computer Vision &amp; Image Processing:</span> Representation
+        learning, convolutional and vision-transformer architectures, and scalable
+        pipelines for large-scale image understanding.</li>
+      <li><span class="hl">Self-Supervised Learning &amp; Foundation Models:</span>
+        Pretraining strategies and representation understanding for data-efficient,
+        generalizable models in medical imaging.</li>
+      <li><span class="hl">Multimodal AI:</span> Vision-language models and
+        vision-genomics integration for clinical decision support, cross-modal
+        retrieval, and multimodal foundation models.</li>
+      <li><span class="hl">Generative AI:</span> Generative models for medical image
+        synthesis, data augmentation, and privacy-preserving learning.</li>
+      <li><span class="hl">Trustworthy AI in Healthcare:</span> Interpretability,
+        robustness, fairness, and human-AI workflows for safe translation of AI
+        models into clinical tools.</li>
+    </ul>
+  </section>
+
+  <!-- ================= PUBLICATIONS ================= -->
+  <section id="publications">
+    <div class="sec-head reveal"><h2>Publications</h2><span class="bar"></span></div>
+    <!-- <p class="sec-sub reveal">Selected papers — hover a card to preview the figure or animation.</p> -->
+    <p class="sec-sub reveal">Selected papers</p>
+
+    <!-- HistoLite -->
+    <article class="pub reveal">
+      <div class="pub-media"><img src="images/HistoLite.png" alt="HistoLite framework figure" loading="lazy"></div>
+      <div class="pub-body">
+        <span class="venue">Scientific Reports · 2025</span>
+        <h3><a href="https://www.nature.com/articles/s41598-025-20411-0">Lightweight Self-Supervised Learning Framework for Domain Generalization in Histopathology</a></h3>
+        <p class="authors"><strong>Abubakr Shafique</strong>, Amanda Dya, Xiaoli Qin, Najd Alshamlan, Susan J. Done, Dimitrios Androutsos, April Khademi</p>
+        <p class="pub-desc">HistoLite is a lightweight self-supervised learning framework for domain-invariant representation learning in histopathology. Using a dual-scanner dataset, it evaluates the impact of scanner-induced covariate shifts on foundation models, revealing their susceptibility to scanner bias. HistoLite demonstrates reduced representation shift and improved generalization, highlighting its efficiency and robustness compared to large-scale models.</p>
+        <div class="pub-links">
+          <a href="https://www.nature.com/articles/s41598-025-20411-0">Paper</a>
+          <a href="https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-025-20411-0/MediaObjects/41598_2025_20411_MOESM1_ESM.pdf">Supplementary</a>
+          <a href="https://github.com/IAMLAB-Ryerson/HistoLite">Code</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- FAIMI -->
+    <article class="pub reveal">
+      <div class="pub-media"><img src="images/RepShift.png" alt="Representation shift figure" loading="lazy"></div>
+      <div class="pub-body">
+        <span class="venue">MICCAI FAIMI · 2025</span>
+        <h3><a href="https://link.springer.com/chapter/10.1007/978-3-032-05870-6_4">How Fair are Foundation Models? Exploring the Role of Covariate Bias in Histopathology</a></h3>
+        <p class="authors"><strong>Abubakr Shafique</strong>, Amanda Dya, Xiaoli Qin, Najd Alshamlan, Susan J. Done, Dimitrios Androutsos, April Khademi</p>
+        <p class="pub-desc">This paper investigates the impact of covariate shift, particularly those arising from scanner-specific variations, on the performance and robustness of foundation models in computational histopathology.</p>
+        <div class="pub-links">
+          <a href="https://link.springer.com/chapter/10.1007/978-3-032-05870-6_4">Paper</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- MIDOG -->
+    <article class="pub reveal">
+      <div class="pub-media"><img src="images/MiDOG2025.png" alt="MIDOG 2025 mitosis detection figure" loading="lazy"></div>
+      <div class="pub-body">
+        <span class="venue">MICCAI MIDOG Challenge · 2025</span>
+        <h3><a href="https://arxiv.org/abs/2509.03614">Teacher-Student Model for Detecting and Classifying Mitosis in the MIDOG 2025 Challenge</a></h3>
+        <p class="authors">Seungho Choe, Xiaoli Qin, <strong>Abubakr Shafique</strong>, Amanda Dya, Susan Done, Dimitrios Androutsos, April Khademi</p>
+        <p class="pub-desc">A teacher-student segmentation framework for robust mitosis detection and atypical mitosis classification. Built on a UNet backbone with contrastive and domain-adversarial learning, the model mitigates domain shift and data imbalance, achieving strong performance (F1 = 0.7660, balanced accuracy = 0.8414).</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2509.03614">Paper</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- PathDino -->
+    <article class="pub reveal">
+      <div class="pub-media">
+        <video src="images/PathDino.mp4" autoplay muted loop playsinline></video>
+      </div>
+      <div class="pub-body">
+        <span class="venue">CVPR · 2024</span>
+        <h3><a href="https://openaccess.thecvf.com/content/CVPR2024/html/Alfasly_Rotation-Agnostic_Image_Representation_Learning_for_Digital_Pathology_CVPR_2024_paper.html">Rotation-Agnostic Image Representation Learning for Digital Pathology</a></h3>
+        <p class="authors">Saghir Alfasly, <strong>Abubakr Shafique</strong>, Peyman Nejat, Jibran Khan, Areej Alsaafin, Ghazal Alabtah, H.R. Tizhoosh</p>
+        <p class="pub-desc">Introduces a fast patch selection method (FPS) for efficient selection of representative patches while preserving spatial distribution; HistoRotate, a 360° rotation augmentation for training histopathology models; and PathDino, a compact histopathology Transformer with five small vision transformer blocks and ≈9M parameters.</p>
+        <div class="pub-links">
+          <a href="https://openaccess.thecvf.com/content/CVPR2024/html/Alfasly_Rotation-Agnostic_Image_Representation_Learning_for_Digital_Pathology_CVPR_2024_paper.html">Paper</a>
+          <a href="https://kimialabmayo.github.io/PathDino-Page/">Project</a>
+          <a href="https://huggingface.co/spaces/Saghir/PathDino">Demo</a>
+          <a href="https://github.com/KimiaLabMayo/PathDino">Code</a>
+          <a href="https://openaccess.thecvf.com/content/CVPR2024/supplemental/Alfasly_Rotation-Agnostic_Image_Representation_CVPR_2024_supplemental.pdf">Supplementary</a>
+          <a href="https://portal.gdc.cancer.gov/repository?facetTab=files&filters=%7B%22op%22%3A%22and%22%2C%22content%22%3A%5B%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22cases.project.program.name%22%2C%22value%22%3A%5B%22TCGA%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.access%22%2C%22value%22%3A%5B%22open%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.data_format%22%2C%22value%22%3A%5B%22svs%22%5D%7D%7D%2C%7B%22op%22%3A%22in%22%2C%22content%22%3A%7B%22field%22%3A%22files.experimental_strategy%22%2C%22value%22%3A%5B%22Diagnostic%20Slide%22%5D%7D%7D%5D%7D">Data</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- Foundation Models -->
+    <article class="pub reveal">
+      <div class="pub-media"><img src="images/FM.jpg" alt="Foundation models comparison figure" loading="lazy"></div>
+      <div class="pub-body">
+        <span class="venue">Mayo Clinic Proceedings: Digital Health · 2024</span>
+        <h3><a href="https://www.sciencedirect.com/science/article/pii/S2949761224000142">Foundation Models for Histopathology — Fanfare or Flair?</a></h3>
+        <p class="authors">Saghir Alfasly, Peyman Nejat, Sobhan Hemati, Jibran Khan, Isaiah Lahra, Areej Alsaafin, <strong>Abubakr Shafique</strong>, Nneka Comfere, Dennis Murphree, Chady Meroueh, Saba Yasir, Aaron Mangold, Lisa Boardman, Vijay H. Shah, Joaquin J. Garcia, H.R. Tizhoosh</p>
+        <p class="pub-desc">A detailed comparison of foundation models (CLIP derivatives PLIP and BiomedCLIP) against domain-specific histology models across eight diverse datasets — four internal from Mayo Clinic and four public (PANDA, BRACS, CAMELYON16, DigestPath). Findings show domain-specific models such as DinoSSLPath and KimiaNet perform better, underlining the significance of clean large datasets.</p>
+        <div class="pub-links">
+          <a href="https://www.sciencedirect.com/science/article/pii/S2949761224000142">Paper</a>
+          <a href="https://ars.els-cdn.com/content/image/1-s2.0-S2949761224000142-mmc1.pdf">Supplementary</a>
+        </div>
+      </div>
+    </article>
+
+    <!-- SDM -->
+    <article class="pub reveal">
+      <div class="pub-media"><img src="images/SDM.gif" alt="SDM patch selection animation" loading="lazy"></div>
+      <div class="pub-body">
+        <span class="venue">Preprint · 2023</span>
+        <h3><a href="https://arxiv.org/abs/2311.09902">Selection of Distinct Morphologies to Divide &amp; Conquer Gigapixel Pathology Images</a></h3>
+        <p class="authors"><strong>Abubakr Shafique</strong>, Saghir Alfasly, Areej Alsaafin, Peyman Nejat, Jibran Khan, H.R. Tizhoosh</p>
+        <p class="pub-desc">SDM is a novel method for selecting diverse WSI patches, minimizing patch count while capturing all morphological variations. SDM outperforms the state of the art, achieving high representativeness without needing parameter tuning.</p>
+        <div class="pub-links">
+          <a href="https://arxiv.org/abs/2311.09902">Paper</a>
+          <a href="https://arxiv.org/pdf/2311.09902.pdf">Supplementary</a>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================= GAME ================= -->
+  <section id="game">
+    <div class="sec-head reveal"><h2>Scholar Run</h2><span class="bar"></span></div>
+    <p class="sec-sub reveal">Reading list piling up? Take a break — help the scholar sprint through the literature and leap over the piles of books. Every point is a citation. 📚</p>
+    <div class="game-shell reveal">
+      <canvas id="runnerCanvas" width="940" height="300" aria-label="Scholar Run game: press space or tap to jump over book piles"></canvas>
+      <div class="game-hint">
+        <span><kbd>Space</kbd> / <kbd>↑</kbd> / tap — jump</span>
+        <span id="gameStatus">Press Space or tap the canvas to start</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= INVITED TALKS ================= -->
+  <section id="talks">
+    <div class="sec-head reveal"><h2>Invited Talks</h2><span class="bar"></span></div>
+    <div class="card-grid">
+      <div class="card talk reveal">
+        <div class="year">Feb<br>2026</div>
+        <div>
+          <a class="stretched" href="https://spie.org/medical-imaging/presentation/Investigating-scannerbias-in-histopathology-image-retrieval-using-foundation-models/13932-5">
+            <div class="t-title">Investigating Scanner-bias in Histopathology Image Retrieval Using Foundation Models</div></a>
+          <div class="t-venue">SPIE Medical Imaging</div>
+        </div>
+      </div>
+      <div class="card talk reveal">
+        <div class="year">Feb<br>2026</div>
+        <div>
+          <div class="t-title">How Fair are Foundation Models? Exploring the Role of Covariate Bias in Histopathology</div>
+          <div class="t-venue">AbbVie CVRT Imaging Seminar</div>
+        </div>
+      </div>
+      <div class="card talk reveal">
+        <div class="year">Oct<br>2025</div>
+        <div>
+          <a class="stretched" href="https://www.youtube.com/watch?v=t2YN8WrqHlQ">
+            <div class="t-title">How Fair are Foundation Models? Exploring the Role of Covariate Bias in Histopathology</div></a>
+          <div class="t-venue">Stanford MedAI Group</div>
+        </div>
+      </div>
+      <div class="card talk reveal">
+        <div class="year">Apr<br>2025</div>
+        <div>
+          <div class="t-title">AI to Improve Cancer Care</div>
+          <div class="t-venue">Canadian Cancer Trials Group — Annual Spring Meeting</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ACADEMIC SERVICES ================= -->
+  <section id="service">
+    <div class="sec-head reveal"><h2>Academic Services</h2><span class="bar"></span></div>
+    <p class="sec-sub reveal">Peer reviewer for the following journals.</p>
+    <div class="card-grid">
+      <!-- <a class="card reveal" href="https://link.springer.com/journal/10278"><div class="role">Academic Reviewer</div><div class="where">Journal of Imaging Informatics in Medicine</div><span class="when">2025</span></a> -->
+      <a class="card reveal" href="https://link.springer.com/journal/10278"><div class="role">Academic Reviewer</div><div class="where">Journal of Imaging Informatics in Medicine</div></a>
+      <a class="card reveal" href="https://www.nature.com/npjprecisiononcology"><div class="role">Academic Reviewer</div><div class="where">npj Precision Oncology</div></a>
+      <a class="card reveal" href="https://www.nature.com/npjdigitalmed"><div class="role">Academic Reviewer</div><div class="where">npj Digital Medicine</div></a>
+      <a class="card reveal" href="https://link.springer.com/journal/42047"><div class="role">Academic Reviewer</div><div class="where">Surgical and Experimental Pathology</div></a>
+      <a class="card reveal" href="https://www.nature.com/srep"><div class="role">Academic Reviewer</div><div class="where">Scientific Reports</div></a>
+      <a class="card reveal" href="https://link.springer.com/journal/10791"><div class="role">Academic Reviewer</div><div class="where">Discover Computing</div></a>
+      <a class="card reveal" href=""><div class="role">Academic Reviewer</div><div class="where">Diagnostic Pathology</div></a>
+      <a class="card reveal" href=""><div class="role">Academic Reviewer</div><div class="where">Communications Medicine</div></a>
+      <a class="card reveal" href=""><div class="role">Academic Reviewer</div><div class="where">Medical Image Analysis</div></a>
+      <a class="card reveal" href=""><div class="role">Academic Reviewer</div><div class="where">Scientific Data</div></a>
+      <a class="card reveal" href=""><div class="role">Academic Reviewer</div><div class="where">BMC Medical Imaging</div></a>
+    </div>
+  </section>
+
+  <!-- ================= TEACHING ================= -->
+  <section id="teaching">
+    <div class="sec-head reveal"><h2>Teaching</h2><span class="bar"></span></div>
+    <div class="card-grid">
+      <div class="card reveal">
+        <div class="role">Guest Lecture</div>
+        <div class="where">Department of Electrical, Computer and Biomedical Engineering, Toronto Metropolitan University, Toronto, ON, Canada</div>
+      </div>
+      <div class="card reveal">
+        <div class="role">Graduate Teaching Assistant</div>
+        <div class="where">Department of Engineering, University of Waterloo, Waterloo, ON, Canada</div>
+      </div>
+      <div class="card reveal">
+        <div class="role">Graduate Teaching Assistant</div>
+        <div class="where">College of Applied Sciences, National Taiwan University of Science and Technology, Taipei, Taiwan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CERTIFICATIONS ================= -->
+  <section id="certifications">
+    <div class="sec-head reveal"><h2>Certifications</h2><span class="bar"></span></div>
+    <div class="cert-grid">
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/specialization/VR14XQN1IG7M">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Cancer Biology (Specialization)</span><span class="c-org"><br>Johns Hopkins University<br>Oct 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/9N2ZYWKPPDD9">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Introduction to the Biology of Cancer</span><span class="c-org"><br>Johns Hopkins University<br>Oct 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/TWQ9P72W3C5P">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Understanding Cancer Metastasis</span><span class="c-org"><br>Johns Hopkins University<br>Oct 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/JNP5BNJ5EEV7">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Understanding Prostate Cancer</span><span class="c-org"><br>Johns Hopkins University<br>Oct 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/4YE5HKV6YUIJ">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Data Science in Stratified Healthcare and Precision Medicine</span><span class="c-org"><br>University of Edinburgh<br>Oct 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/1XJUPYNJQNU6">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Introduction to Neurohacking in R</span><span class="c-org"><br>Johns Hopkins University<br>Oct 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/LP5N4UEXDD9Q">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">COVID-19 Contact Tracing</span><span class="c-org"><br>Johns Hopkins University<br>Jul 2025</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/QX6YWBQJB7LC">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">An Introduction to Practical Deep Learning</span><span class="c-org"><br>Intel Corporation<br>Dec 2020</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/D8CTL9YS76DE">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Introduction to TensorFlow for AI, ML, and Deep Learning</span><span class="c-org"><br>DeepLearning.AI<br>Aug 2020</span></span></a>
+      <a class="cert reveal" href="https://www.coursera.org/account/accomplishments/verify/AUPWNCZHB7C8">
+        <span class="badge-ico"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zm-6 8.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3-6-3z"/></svg></span>
+        <span><span class="c-name">Neural Networks and Deep Learning</span><span class="c-org"><br>DeepLearning.AI<br>Aug 2020</span></span></a>
+    </div>
+  </section>
+
+</div><!-- /wrap -->
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Abubakr Shafique, PhD · Built with ☕, 📚 and a little JavaScript.</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   Theme toggle
+============================================================ */
+(function () {
+  var btn = document.getElementById('themeToggle');
+  btn.addEventListener('click', function () {
+    var root = document.documentElement;
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+})();
+
+/* ============================================================
+   Reveal on scroll
+============================================================ */
+(function () {
+  var els = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.07 });
+  els.forEach(function (el) { io.observe(el); });
+})();
+
+/* ============================================================
+   SCHOLAR RUN — a Chrome-dino-style runner with a scholar
+   jumping over piles of books.
+============================================================ */
+(function () {
+  var canvas = document.getElementById('runnerCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var statusEl = document.getElementById('gameStatus');
+
+  var W = 940, H = 300;
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  ctx.scale(dpr, dpr);
+
+  var GROUND = H - 52;
+  var GRAVITY = 0.78;
+  var JUMP_V = -14.2;
+
+  var state = 'ready';           // 'ready' | 'playing' | 'over'
+  var frame = 0;
+  var speed = 6;
+  var obstacles = [];
+  var decor = [];
+  var nextObstacleIn = 460;
+  var high = 0;
+  try { high = parseInt(localStorage.getItem('scholarRunHigh') || '0', 10) || 0; } catch (e) {}
+
+  var player = { x: 84, y: GROUND, vy: 0, h: 62 };
+
+  var BOOK_LIGHT = ['#c0392b', '#e67e22', '#16a085', '#2f4fdd', '#8e44ad', '#b03a2e'];
+  var BOOK_DARK  = ['#f06548', '#f5b83d', '#4cc38a', '#7ea0ff', '#c084fc', '#ff8a65'];
+
+  function palette() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return dark ? {
+      text: '#e8ebf4', muted: '#98a1b6', ground: '#39415a', dash: '#2a3247',
+      gown: '#7ea0ff', skin: '#f0c8a0', cap: '#0b0e15', tassel: '#f5b83d',
+      pages: '#e8ebf4', books: BOOK_DARK, overlay: 'rgba(12,15,22,0.72)'
+    } : {
+      text: '#1b2130', muted: '#5a6172', ground: '#b9c1d6', dash: '#dde2ee',
+      gown: '#2f4fdd', skin: '#f0c8a0', cap: '#171a22', tassel: '#e8830c',
+      pages: '#ffffff', books: BOOK_LIGHT, overlay: 'rgba(246,247,251,0.78)'
+    };
+  }
+
+  function roundRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x + r, y);
+    c.arcTo(x + w, y, x + w, y + h, r);
+    c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r);
+    c.arcTo(x, y, x + w, y, r);
+    c.closePath();
+  }
+
+  /* ---------- entities ---------- */
+  function spawnObstacle() {
+    var n = 2 + Math.floor(Math.random() * 3); // 2–4 books
+    var books = [], total = 0, maxW = 0;
+    var cols = palette().books;
+    for (var i = 0; i < n; i++) {
+      var h = 9 + Math.random() * 4;
+      var w = 34 + Math.random() * 14;
+      books.push({ w: w, h: h, color: cols[Math.floor(Math.random() * cols.length)] });
+      total += h;
+      if (w > maxW) maxW = w;
+    }
+    obstacles.push({ x: W + 60, books: books, h: total, w: maxW });
+  }
+
+  function spawnDecor() {
+    decor.push({
+      x: W + 40,
+      y: 26 + Math.random() * 110,
+      s: 0.55 + Math.random() * 0.7,
+      spin: Math.random() * Math.PI * 2
+    });
+  }
+
+  /* ---------- drawing ---------- */
+  function drawScholar(c, x, y, f, airborne, col) {
+    c.save();
+    c.translate(x, y);
+    c.lineCap = 'round';
+
+    // legs (behind gown)
+    var f1x, f1y, f2x, f2y;
+    if (airborne) { f1x = 8; f1y = -9; f2x = -6; f2y = -5; }
+    else {
+      f1x = Math.sin(f * 0.32) * 9;
+      f1y = -Math.max(0, Math.cos(f * 0.32)) * 7;
+      f2x = Math.sin(f * 0.32 + Math.PI) * 9;
+      f2y = -Math.max(0, Math.cos(f * 0.32 + Math.PI)) * 7;
+    }
+    c.strokeStyle = col.text;
+    c.lineWidth = 5;
+    c.beginPath(); c.moveTo(0, -26); c.lineTo(f1x, f1y); c.stroke();
+    c.beginPath(); c.moveTo(0, -26); c.lineTo(f2x, f2y); c.stroke();
+
+    // gown (flared academic robe)
+    c.fillStyle = col.gown;
+    c.beginPath();
+    c.moveTo(-7, -52);
+    c.quadraticCurveTo(7, -55, 9, -47);
+    c.lineTo(13, -24);
+    c.lineTo(-11, -24);
+    c.closePath();
+    c.fill();
+
+    // arm + book in hand
+    c.strokeStyle = col.gown;
+    c.lineWidth = 4.5;
+    c.beginPath(); c.moveTo(3, -45); c.lineTo(12, -40); c.stroke();
+    c.fillStyle = col.tassel;
+    c.fillRect(10, -45, 10, 7);
+    c.fillStyle = col.pages;
+    c.fillRect(11, -43.5, 8, 2);
+
+    // head
+    c.fillStyle = col.skin;
+    c.beginPath(); c.arc(3, -57, 7.5, 0, Math.PI * 2); c.fill();
+
+    // mortarboard cap
+    c.fillStyle = col.cap;
+    c.beginPath();
+    c.moveTo(-8, -63); c.lineTo(14, -63); c.lineTo(19, -59.5); c.lineTo(-3, -59.5);
+    c.closePath(); c.fill();
+    c.fillRect(-1, -63, 8, 4);
+    // tassel
+    c.strokeStyle = col.tassel;
+    c.lineWidth = 1.6;
+    c.beginPath(); c.moveTo(17, -61); c.lineTo(19, -55); c.stroke();
+    c.fillStyle = col.tassel;
+    c.beginPath(); c.arc(19, -54, 1.9, 0, Math.PI * 2); c.fill();
+
+    c.restore();
+  }
+
+  function drawPile(c, o, col) {
+    var y = GROUND;
+    for (var i = 0; i < o.books.length; i++) {
+      var b = o.books[i];
+      var off = (i % 2 === 0) ? -2.5 : 2.5;
+      c.fillStyle = b.color;
+      roundRect(c, o.x - b.w / 2 + off, y - b.h, b.w, b.h, 2.5);
+      c.fill();
+      c.fillStyle = col.pages;
+      c.fillRect(o.x - b.w / 2 + off + 3, y - b.h + 2.5, b.w - 6, 2);
+      y -= b.h;
+    }
+    // bookmark ribbon on top book
+    c.fillStyle = col.tassel;
+    c.fillRect(o.x + 4, y, 3, 6);
+  }
+
+  function drawCapDecor(c, d, col) {
+    c.save();
+    c.translate(d.x, d.y);
+    c.rotate(Math.sin(d.spin + d.x * 0.008) * 0.35);
+    c.scale(d.s, d.s);
+    c.globalAlpha = 0.45;
+    c.fillStyle = col.dash;
+    c.beginPath();
+    c.moveTo(0, -7); c.lineTo(15, 0); c.lineTo(0, 7); c.lineTo(-15, 0);
+    c.closePath(); c.fill();
+    c.fillRect(-5, 0, 10, 6);
+    c.restore();
+  }
+
+  function drawText(c, col) {
+    var score = Math.floor(frame / 5);
+    c.fillStyle = col.muted;
+    c.font = '700 14px "JetBrains Mono", monospace';
+    c.textAlign = 'right';
+    c.fillText('CITATIONS ' + score, W - 18, 30);
+    c.fillText('BEST ' + Math.max(high, score), W - 18, 50);
+    c.textAlign = 'left';
+
+    if (state !== 'playing') {
+      c.fillStyle = col.overlay;
+      roundRect(c, W / 2 - 250, H / 2 - 62, 500, 118, 16);
+      c.fill();
+      c.fillStyle = col.text;
+      c.textAlign = 'center';
+      if (state === 'ready') {
+        c.font = '800 24px Inter, sans-serif';
+        c.fillText('🎓 Scholar Run', W / 2, H / 2 - 18);
+        c.font = '500 14px Inter, sans-serif';
+        c.fillStyle = col.muted;
+        c.fillText('Leap over the piles of books — the literature never ends.', W / 2, H / 2 + 10);
+        c.fillText('Press Space, ↑, or tap to start', W / 2, H / 2 + 34);
+      } else {
+        c.font = '800 24px Inter, sans-serif';
+        c.fillText('📚 Buried under the literature!', W / 2, H / 2 - 18);
+        c.font = '500 14px Inter, sans-serif';
+        c.fillStyle = col.muted;
+        c.fillText('Citations: ' + score + '  ·  Best: ' + high, W / 2, H / 2 + 10);
+        c.fillText('Press Space or tap to run again', W / 2, H / 2 + 34);
+      }
+      c.textAlign = 'left';
+    }
+  }
+
+  function draw() {
+    var col = palette();
+    ctx.clearRect(0, 0, W, H);
+
+    // floating graduation caps
+    for (var i = 0; i < decor.length; i++) drawCapDecor(ctx, decor[i], col);
+
+    // ground
+    ctx.strokeStyle = col.ground;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(0, GROUND + 1.5); ctx.lineTo(W, GROUND + 1.5); ctx.stroke();
+    // dashes scrolling on ground
+    ctx.strokeStyle = col.dash;
+    ctx.lineWidth = 2;
+    var off = (frame * speed * 0.5) % 46;
+    for (var gx = -off; gx < W; gx += 46) {
+      ctx.beginPath(); ctx.moveTo(gx, GROUND + 14); ctx.lineTo(gx + 20, GROUND + 14); ctx.stroke();
+    }
+
+    for (var j = 0; j < obstacles.length; j++) drawPile(ctx, obstacles[j], col);
+
+    var airborne = player.y < GROUND - 0.5;
+    drawScholar(ctx, player.x, player.y, frame, airborne, col);
+
+    drawText(ctx, col);
+  }
+
+  /* ---------- update ---------- */
+  function update() {
+    frame++;
+    speed = 6 + Math.min(9, frame / 480);
+
+    player.vy += GRAVITY;
+    player.y += player.vy;
+    if (player.y >= GROUND) { player.y = GROUND; player.vy = 0; }
+
+    nextObstacleIn -= speed;
+    if (nextObstacleIn <= 0) {
+      spawnObstacle();
+      nextObstacleIn = 300 + Math.random() * 380 + speed * 20;
+    }
+    for (var i = 0; i < obstacles.length; i++) obstacles[i].x -= speed;
+    obstacles = obstacles.filter(function (o) { return o.x > -90; });
+
+    if (frame % 80 === 0) spawnDecor();
+    for (var k = 0; k < decor.length; k++) decor[k].x -= speed * 0.22;
+    decor = decor.filter(function (d) { return d.x > -60; });
+
+    // collision (slightly forgiving hitbox)
+    var px1 = player.x - 10, px2 = player.x + 12;
+    var feet = player.y;
+    for (var m = 0; m < obstacles.length; m++) {
+      var o = obstacles[m];
+      var ox1 = o.x - o.w / 2 + 5, ox2 = o.x + o.w / 2 - 5;
+      var top = GROUND - o.h;
+      if (px1 < ox2 && px2 > ox1 && feet > top + 4) {
+        state = 'over';
+        var score = Math.floor(frame / 5);
+        if (score > high) {
+          high = score;
+          try { localStorage.setItem('scholarRunHigh', String(high)); } catch (e) {}
+        }
+        if (statusEl) statusEl.textContent = 'Game over — ' + score + ' citations. Space / tap to retry.';
+        break;
+      }
+    }
+  }
+
+  function loop() {
+    if (state === 'playing') {
+      update();
+      if (statusEl && frame % 30 === 0) {
+        statusEl.textContent = 'Running… ' + Math.floor(frame / 5) + ' citations';
+      }
+    }
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  /* ---------- input ---------- */
+  function reset() {
+    frame = 0; speed = 6;
+    obstacles = []; decor = [];
+    nextObstacleIn = 460;
+    player.y = GROUND; player.vy = 0;
+  }
+
+  function press() {
+    if (state !== 'playing') {
+      reset();
+      state = 'playing';
+      if (statusEl) statusEl.textContent = 'Running…';
+      player.vy = JUMP_V;
+      return;
+    }
+    if (player.y >= GROUND - 0.5) player.vy = JUMP_V;
+  }
+
+  window.addEventListener('keydown', function (e) {
+    if (e.code === 'Space' || e.code === 'ArrowUp' || e.code === 'KeyW') {
+      var r = canvas.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < window.innerHeight) {
+        e.preventDefault();
+        press();
+      }
+    }
+  });
+  canvas.addEventListener('pointerdown', function (e) {
+    e.preventDefault();
+    press();
+  });
+
+  loop();
+})();
+</script>
+</body>
 </html>
